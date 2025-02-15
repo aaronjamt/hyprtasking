@@ -193,6 +193,51 @@ void HTView::move(std::string arg) {
     });
 }
 
+void HTView::drag(std::string arg) {
+    if (closing)
+        return;
+    const PHLMONITOR monitor = get_monitor();
+    if (monitor == nullptr)
+        return;
+    const PHLWORKSPACE active_workspace = monitor->activeWorkspace;
+    if (active_workspace == nullptr)
+        return;
+
+    layout->build_overview_layout(HT_VIEW_CLOSED);
+    const auto ws_layout = layout->overview_layout[active_workspace->m_iID];
+
+    int target_x = ws_layout.x;
+    int target_y = ws_layout.y;
+    if (arg == "up") {
+        target_y--;
+    } else if (arg == "down") {
+        target_y++;
+    } else if (arg == "right") {
+        target_x++;
+    } else if (arg == "left") {
+        target_x--;
+    }
+
+    const WORKSPACEID id = layout->get_ws_id_from_xy(target_x, target_y);
+    PHLWORKSPACE other_workspace = g_pCompositor->getWorkspaceByID(id);
+
+    if (other_workspace == nullptr && id != WORKSPACE_INVALID)
+        other_workspace = g_pCompositor->createNewWorkspace(id, monitor->ID);
+    if (other_workspace == nullptr)
+        return;
+
+    monitor->changeWorkspace(other_workspace);
+
+    PHLWINDOW active_window = active_workspace->m_pLastFocusedWindow.lock();
+    g_pCompositor->moveWindowToWorkspaceSafe(active_window, other_workspace);
+    active_window.reset();
+
+    navigating = true;
+    layout->on_move(active_workspace->m_iID, other_workspace->m_iID, [this](auto self) {
+        navigating = false;
+    });
+}
+
 PHLMONITOR HTView::get_monitor() {
     const PHLMONITOR monitor = g_pCompositor->getMonitorFromID(monitor_id);
     if (monitor == nullptr)
