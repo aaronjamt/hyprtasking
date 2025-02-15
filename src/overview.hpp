@@ -46,6 +46,7 @@ class HTView {
 
     // arg is up, down, left, right;
     void move(std::string arg);
+    void drag(std::string arg);
 };
 
 typedef SP<HTView> PHTVIEW;
