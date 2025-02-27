@@ -284,12 +284,16 @@ void HTLayoutGrid::render() {
             monitor->activeWorkspaceID() == ws_id ? *ACTIVECOL : *INACTIVECOL;
         CBox border_box = ws_layout.box;
 
-        CBorderPassElement::SBorderData data;
-        data.box = border_box;
-        data.grad1 = border_col;
-        data.borderSize = BORDERSIZE;
-        g_pHyprRenderer->m_sRenderPass.add(makeShared<CBorderPassElement>(data));
-
+        if (!(border_box.width > 0 && border_box.height > 0)) {
+            Debug::log(WARN, "[Hyprtasking] Invalid border_box size (A)!");
+        } else {
+            CBorderPassElement::SBorderData data;
+            data.box = border_box;
+            data.grad1 = border_col;
+            data.borderSize = BORDERSIZE;
+            g_pHyprRenderer->m_sRenderPass.add(makeShared<CBorderPassElement>(data));
+        }
+            
         if (workspace != nullptr) {
             monitor->activeWorkspace = workspace;
             workspace->startAnim(true, false, true);
@@ -335,11 +339,15 @@ void HTLayoutGrid::render() {
             monitor->activeWorkspaceID() == start_workspace->m_iID ? *ACTIVECOL : *INACTIVECOL;
         CBox border_box = ws_box;
 
-        CBorderPassElement::SBorderData data;
-        data.box = border_box;
-        data.grad1 = border_col;
-        data.borderSize = BORDERSIZE;
-        g_pHyprRenderer->m_sRenderPass.add(makeShared<CBorderPassElement>(data));
+        if (!(border_box.width > 0 && border_box.height > 0)) {
+            Debug::log(WARN, "[Hyprtasking] Invalid border_box size (B)!");
+        } else {
+            CBorderPassElement::SBorderData data;
+            data.box = border_box;
+            data.grad1 = border_col;
+            data.borderSize = BORDERSIZE;
+            g_pHyprRenderer->m_sRenderPass.add(makeShared<CBorderPassElement>(data));
+        }
 
         ((render_workspace_t)(render_workspace_hook->m_pOriginal))(
             g_pHyprRenderer.get(),
