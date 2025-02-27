@@ -285,7 +285,9 @@ void HTLayoutGrid::render() {
         CBox border_box = ws_layout.box;
 
         if (!(border_box.width > 0 && border_box.height > 0)) {
-            Debug::log(WARN, "[Hyprtasking] Invalid border_box size (A)!");
+            char debug[1024];
+            sprintf(debug, "[Hyprtasking] Invalid border_box size (A)! Values: width=%d, height=%d", border_box.width, border_box.height);
+            Debug::log(WARN, debug);
         } else {
             CBorderPassElement::SBorderData data;
             data.box = border_box;
