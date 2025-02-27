@@ -286,7 +286,7 @@ void HTLayoutGrid::render() {
 
         if (!(border_box.width > 0 && border_box.height > 0)) {
             char debug[1024];
-            sprintf(debug, "[Hyprtasking] Invalid border_box size (A)! Values: width=%d, height=%d", border_box.width, border_box.height);
+            sprintf(debug, "[Hyprtasking] Invalid border_box size (A)! Values: width=%f, height=%f", border_box.width, border_box.height);
             Debug::log(WARN, debug);
         } else {
             CBorderPassElement::SBorderData data;
