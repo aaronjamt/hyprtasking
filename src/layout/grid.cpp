@@ -284,11 +284,12 @@ void HTLayoutGrid::render() {
             monitor->activeWorkspaceID() == ws_id ? *ACTIVECOL : *INACTIVECOL;
         CBox border_box = ws_layout.box;
 
-	if (ws_id < 0) continue;
-
 	char debug[1024];
 	sprintf(debug, "[Hyprtasking] Handling workspace %d.", ws_id);
 	Debug::log(WARN, debug);
+
+	if (ws_id < 0) continue;
+
         if (!(border_box.width > 0 && border_box.height > 0)) {
             sprintf(debug, "[Hyprtasking] Invalid border_box size for ws_id=%d! Values: pos=(%f, %f), size=(%f, %f)", ws_id, ws_layout.box.pos().x, ws_layout.box.pos().y, border_box.width, border_box.height);
             Debug::log(WARN, debug);
