@@ -284,6 +284,8 @@ void HTLayoutGrid::render() {
             monitor->activeWorkspaceID() == ws_id ? *ACTIVECOL : *INACTIVECOL;
         CBox border_box = ws_layout.box;
 
+	if (ws_id < 0) continue;
+
 	char debug[1024];
 	sprintf(debug, "[Hyprtasking] Handling workspace %d.", ws_id);
 	Debug::log(WARN, debug);
